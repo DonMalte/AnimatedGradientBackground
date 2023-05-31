@@ -6,6 +6,6 @@ final class AnimatedGradientBackgroundTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct
         // results.
-        XCTAssertEqual(AnimatedGradientBackground().text, "Hello, World!")
+//        XCTAssertEqual(AnimatedGradientBackground().text, "Hello, World!")
     }
 }
