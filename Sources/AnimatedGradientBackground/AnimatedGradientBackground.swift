@@ -7,7 +7,8 @@
 import SwiftUI
 
 /*
- I use two identical RadialGradients, set with different colors (old and newly changed) and change the opacity to animate a color change. Not perfect but good enough. Got the idea from this site: https://nerdyak.tech/development/2019/09/30/animating-gradients-swiftui.html
+ I use two identical RadialGradients set with different colors (old and newly changed) and change the opacity of the gradient in the front to animate a color change. Not perfect but good enough.
+ Got the idea from this blog: https://nerdyak.tech/development/2019/09/30/animating-gradients-swiftui.html
  */
 
 public struct AnimatedGradientBackground: View {
@@ -52,6 +53,7 @@ public struct AnimatedGradientBackground: View {
             ZStack {
                 let startRadius = viewModel.animateGradient ? geometry.size.width * 0.8 : geometry.size.height * 0.8
                 
+                // Secondary radial gradient
                 RadialGradient(gradient: Gradient(colors: [
                         secondBackgroundColor,
                         secondAccentColor
@@ -60,6 +62,7 @@ public struct AnimatedGradientBackground: View {
                     startRadius: startRadius, endRadius: 0)
                 .ignoresSafeArea()
                 
+                // Primary radial gradiant
                 RadialGradient(gradient: Gradient(colors: [
                         primaryBackgroundColor,
                         primaryAccentColor
