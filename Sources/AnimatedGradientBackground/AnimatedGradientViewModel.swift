@@ -13,8 +13,8 @@ class AnimatedGradientViewModel: ObservableObject {
     
     var centerPoints = [UnitPoint]()
     var timer: Timer?
-    
-    let duration: TimeInterval = 5
+        
+    private let settings = AnimatedGradientSettings.shared
     
     init() {
         setPoints()
@@ -22,7 +22,7 @@ class AnimatedGradientViewModel: ObservableObject {
     }
     
     private func startCycle() {
-        withAnimation(.linear(duration: 10).repeatForever(autoreverses: true)) {
+        withAnimation(.linear(duration: settings.animationDuration * 2).repeatForever(autoreverses: true)) {
             animateGradient.toggle()
         }
     }
@@ -35,15 +35,8 @@ class AnimatedGradientViewModel: ObservableObject {
     func setPoints() {
         invalidate()
         
-        let topLeading = UnitPoint(x: 0.1, y: 0.2)
-        let topTrailing = UnitPoint(x: 0.8, y: 0.1)
-        let bottomLeading = UnitPoint(x: 0.1, y: 0.85)
-        let bottomTrailing = UnitPoint(x: 0.7, y: 0.7)
-        let leadingMiddle = UnitPoint(x: 0.2, y: 0.6)
-        let trailingMiddle = UnitPoint(x: 0.9, y: 0.4)
-        
-        centerPoints = [topLeading, topTrailing, bottomLeading, bottomTrailing, leadingMiddle, trailingMiddle]
-        timer = Timer.scheduledTimer(timeInterval: duration, target: self, selector: #selector(setNewPoint), userInfo: nil, repeats: true)
+        centerPoints = settings.anchorPoints
+        timer = Timer.scheduledTimer(timeInterval: settings.animationDuration, target: self, selector: #selector(setNewPoint), userInfo: nil, repeats: true)
     }
     
     @objc func setNewPoint() {
@@ -51,13 +44,13 @@ class AnimatedGradientViewModel: ObservableObject {
             return
         }
         
-        // Dont use the same point twice
+        // We don't want to use the same point twice, as there would be no visible animation
         if newPoint == centerUnitPoint {
             setNewPoint()
             return
         }
         
-        withAnimation(.linear(duration: duration)) {
+        withAnimation(.linear(duration: settings.animationDuration)) {
             centerUnitPoint = newPoint
         }
     }

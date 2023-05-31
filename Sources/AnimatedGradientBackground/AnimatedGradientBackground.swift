@@ -7,13 +7,12 @@
 import SwiftUI
 
 /*
- 
  I use two identical RadialGradients, set with different colors (old and newly changed) and change the opacity to animate a color change. Not perfect but good enough. Got the idea from this site: https://nerdyak.tech/development/2019/09/30/animating-gradients-swiftui.html
  */
 
 public struct AnimatedGradientBackground: View {
     
-    init(backgroundColor: Color, accentColor: Color) {
+    init(backgroundColor: Color, accentColor: Color, settings: AnimatedGradientSettings = .shared) {
         self.backgroundColor = backgroundColor
         self.accentColor = accentColor
         
@@ -21,11 +20,16 @@ public struct AnimatedGradientBackground: View {
         self.primaryBackgroundColor = backgroundColor
         self.secondBackgroundColor = backgroundColor
         self.secondAccentColor = accentColor
+        
+        self.settings = settings
     }
     
-    var backgroundColor: Color
-    var accentColor: Color
+    private var backgroundColor: Color
+    private var accentColor: Color
     
+    private var settings: AnimatedGradientSettings
+    
+    // Colors
     @State private var primaryBackgroundColor: Color
     @State private var primaryAccentColor: Color
     @State private var secondBackgroundColor: Color
@@ -33,30 +37,35 @@ public struct AnimatedGradientBackground: View {
     
     @State private var secondColorShown = true
         
+    // ViewModel
     @StateObject var viewModel = AnimatedGradientViewModel()
     
-    private var settings = AnimatedGradientSettings.shared
+    // Variables for rapid changes
+    @State private var isColorChanging: Bool = false
+    
+    @State private var changedAccentColor: Color?
+    @State private var changedBackgroundColor: Color?
+    
     
     public var body: some View {
         GeometryReader { geometry in
             ZStack {
+                let startRadius = viewModel.animateGradient ? geometry.size.width * 0.8 : geometry.size.height * 0.8
                 
-                RadialGradient(
-                    gradient: Gradient(colors: [
+                RadialGradient(gradient: Gradient(colors: [
                         secondBackgroundColor,
                         secondAccentColor
                     ]),
                     center: viewModel.centerUnitPoint,
-                    startRadius: viewModel.animateGradient ? geometry.size.width * 0.8 : geometry.size.height * 0.8, endRadius: 0)
+                    startRadius: startRadius, endRadius: 0)
                 .ignoresSafeArea()
                 
-                RadialGradient(
-                    gradient: Gradient(colors: [
+                RadialGradient(gradient: Gradient(colors: [
                         primaryBackgroundColor,
                         primaryAccentColor
                     ]),
                     center: viewModel.centerUnitPoint,
-                    startRadius: viewModel.animateGradient ? geometry.size.width * 0.8 : geometry.size.height * 0.8, endRadius: 0)
+                    startRadius: startRadius, endRadius: 0)
                 .ignoresSafeArea()
                 .opacity(secondColorShown ? 0 : 1)
                 .onChange(of: accentColor) { newColor in
@@ -90,15 +99,11 @@ public struct AnimatedGradientBackground: View {
             }
         }
     }
+}
+
+// This part is necessary for rapid color changes - they wouldn't animate smoothly otherwise.
+extension AnimatedGradientBackground {
     
-    
-    
-    @State private var isColorChanging: Bool = false
-    
-    @State private var changedAccentColor: Color?
-    @State private var changedBackgroundColor: Color?
-    
-    // This function is necessary for rapid color changes, they wouldn't animate smoothly otherwise.
     private func initateAccentColorChange(_ color: Color) {
         self.changedAccentColor = nil
         
@@ -141,6 +146,7 @@ public struct AnimatedGradientBackground: View {
         if let changedAccentColor {
             initateAccentColorChange(changedAccentColor)
         }
+        
         if let changedBackgroundColor {
             initateBackgroundColorChange(changedBackgroundColor)
         }
