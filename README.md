@@ -21,7 +21,7 @@ It uses two identical RadialGradients set with different colors (old and newly c
 
 **Swift Package Manager**
 
-In Xcode, go to `File > Add Packages` and add `the link`. Add the package to all your targets.
+In Xcode, go to `File > Add Packages` and add `https://github.com/DonMalte/AnimatedGradientBackground.git`. Add the package to all your targets.
 
 
 ## How to use
