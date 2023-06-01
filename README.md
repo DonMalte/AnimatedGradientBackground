@@ -17,7 +17,7 @@ https://github.com/DonMalte/AnimatedGradientBackground/assets/35227173/ef4db93b-
 
 **Requirements**
 
-- iOS 15.0+ / macOS 11.0+
+- iOS 15.0+ / macOS 12.0+
 - Xcode 13+
 - Swift 5+
 
