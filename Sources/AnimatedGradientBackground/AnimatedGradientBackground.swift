@@ -13,7 +13,7 @@ import SwiftUI
 
 public struct AnimatedGradientBackground: View {
     
-    init(backgroundColor: Color, accentColor: Color, settings: AnimatedGradientSettings = .shared) {
+    public init(backgroundColor: Color, accentColor: Color, settings: AnimatedGradientSettings = .shared) {
         self.backgroundColor = backgroundColor
         self.accentColor = accentColor
         

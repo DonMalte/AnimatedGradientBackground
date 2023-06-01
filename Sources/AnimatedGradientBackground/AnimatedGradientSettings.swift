@@ -8,7 +8,7 @@ import SwiftUI
 
 public class AnimatedGradientSettings {
     
-    static var shared = AnimatedGradientSettings()
+    static public var shared = AnimatedGradientSettings()
     
     /// The time it takes for a radial gradient to float from one unit point to the next. Default is set to 5 seconds.
     public var animationDuration: TimeInterval = 5
